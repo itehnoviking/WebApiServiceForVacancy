@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="MediatR" Version="11.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Commands\ProductCommands\" />
+    <Folder Include="Models\Queries\ProductQueries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebApiServiceForVacancy.Core\WebApiServiceForVacancy.Core.csproj" />
+    <ProjectReference Include="..\WebApiServiceForVacancy.Data\WebApiServiceForVacancy.Data.csproj" />
+  </ItemGroup>
+
+</Project>
