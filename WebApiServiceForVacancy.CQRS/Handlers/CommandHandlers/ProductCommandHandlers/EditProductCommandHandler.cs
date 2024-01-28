@@ -16,9 +16,9 @@ public class EditProductCommandHandler : IRequestHandler<EditProductCommand, boo
         _database = database;
         _mapper = mapper;
     }
-    public async Task<bool> Handle(EditProductCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(EditProductCommand command, CancellationToken cancellationToken)
     {
-        var productEntity = _mapper.Map<Product>(request);
+        var productEntity = _mapper.Map<Product>(command);
 
         _database.Products.Update(productEntity);
 

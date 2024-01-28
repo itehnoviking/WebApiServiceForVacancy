@@ -11,9 +11,15 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
     private readonly WebApiServiceForVacancyContext _database;
     private readonly IMapper _mapper;
 
-    public async Task<bool> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public CreateProductCommandHandler(WebApiServiceForVacancyContext database, IMapper mapper)
     {
-        var product = _mapper.Map<Product>(request);
+        _database = database;
+        _mapper = mapper;
+    }
+
+    public async Task<bool> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+    {
+        var product = _mapper.Map<Product>(command);
 
         await _database.Products.AddAsync(product, cancellationToken: cancellationToken);
 

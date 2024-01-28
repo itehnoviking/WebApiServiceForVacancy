@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Handlers\QueryHandlers\OrderQueryHandler\" />
     <Folder Include="Models\Commands\ProductCommands\" />
     <Folder Include="Models\Queries\ProductQueries\" />
   </ItemGroup>

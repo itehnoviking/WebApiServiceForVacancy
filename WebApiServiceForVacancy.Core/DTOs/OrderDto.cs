@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using WebApiServiceForVacancy.Data.Entities;
 
-namespace WebApiServiceForVacancy.Data.Entities;
+namespace WebApiServiceForVacancy.Core.DTOs;
 
-public class Order : BaseEntity
+public class OrderDto
 {
+    public uint Id { get; set; }
     public string Number { get; set; }
-    
+
     public DateTime CreateDateTime { get; set; }
 
     public uint CustomerId { get; set; }

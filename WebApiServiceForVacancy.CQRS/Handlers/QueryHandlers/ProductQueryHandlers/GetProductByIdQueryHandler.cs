@@ -18,11 +18,11 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
         _mapper = mapper;
     }
 
-    public async Task<ProductDto> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ProductDto> Handle(GetProductByIdQuery query, CancellationToken cancellationToken)
     {
         var product = await _database.Products
             .AsNoTracking()
-            .Where(product => product.Id.Equals(request.Id))
+            .Where(product => product.Id.Equals(query.Id))
             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
         return _mapper.Map<ProductDto>(product);

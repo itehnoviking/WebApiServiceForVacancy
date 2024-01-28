@@ -22,9 +22,9 @@ public class ProductService : IProductService
     {
         try
         {
-            var comment = await _mediator.Send(new GetProductByIdQuery(id), new CancellationToken());
+            var product = await _mediator.Send(new GetProductByIdQuery(id), new CancellationToken());
 
-            return comment;
+            return product;
 
         }
         catch (Exception ex)

@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using MediatR;
 using WebApiServiceForVacancy.Core.Interfaces.Services;
 using WebApiServiceForVacancy.Data;
 using WebApiServiceForVacancy.Domain.Services;
@@ -14,9 +16,13 @@ builder.Services.AddDbContext<WebApiServiceForVacancyContext>(opt
 
 //DependencyInjection
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+Assembly.Load("WebApiServiceForVacancy.CQRS");
+builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -23,7 +23,7 @@ namespace WebApiServiceForVacancy.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("CreateNewProduct")]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ResponseMessage), 500)]
@@ -47,7 +47,7 @@ namespace WebApiServiceForVacancy.Controllers
             }
         }
 
-        [HttpPatch("{id}/changeAvailability")]
+        [HttpPatch("changeAvailability/{id}")]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ResponseMessage), 500)]
@@ -83,7 +83,7 @@ namespace WebApiServiceForVacancy.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("GetAllProductsAvailableForOrder")]
         [ProducesResponseType(typeof(IEnumerable<ProductDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ResponseMessage), 500)]
