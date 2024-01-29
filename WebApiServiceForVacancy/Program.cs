@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using MediatR;
+using Serilog;
+using Serilog.Events;
 using WebApiServiceForVacancy.Core.Interfaces.Services;
 using WebApiServiceForVacancy.Data;
 using WebApiServiceForVacancy.Domain.Services;
@@ -9,6 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
+
+builder.Host.UseSerilog((ctx, lc) =>
+    lc.WriteTo.File(builder.Configuration["Serilog:LogFilePath"],
+            LogEventLevel.Information)
+        .WriteTo.Console(LogEventLevel.Verbose));
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<WebApiServiceForVacancyContext>(opt

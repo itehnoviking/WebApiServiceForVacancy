@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Serilog;
 using WebApiServiceForVacancy.Core.DTOs;
 using WebApiServiceForVacancy.Core.Interfaces.Services;
 using WebApiServiceForVacancy.CQRS.Models.Commands.OrderCommands;
@@ -28,9 +29,8 @@ public class OrderService : IOrderService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex + ex.Message);
-            //_logger.LogError(ex, ex.Message);
-            throw;
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
         }
     }
 
@@ -44,9 +44,8 @@ public class OrderService : IOrderService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex + ex.Message);
-            //_logger.LogError(ex, ex.Message);
-            throw;
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
         }
     }
 
@@ -60,21 +59,36 @@ public class OrderService : IOrderService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex + ex.Message);
-            //_logger.LogError(ex, ex.Message);
-            throw;
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
         }
     }
 
     private async Task SetOrderProductAsync(CreateNewOrderCommand command)
     {
-        var order = await _mediator.Send(new GetOrderByNameAndCreateDateQuery(command),  new CancellationToken());
+        try
+        {
+            var order = await _mediator.Send(new GetOrderByNameAndCreateDateQuery(command),  new CancellationToken());
 
-        await _mediator.Send(new SetOrderProductCommand(order.Id, command.ProductIds), new CancellationToken());
+            await _mediator.Send(new SetOrderProductCommand(order.Id, command.ProductIds), new CancellationToken());
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
+        }
     }
 
     private async Task DeleteOrderProductAsync(uint orderId)
     {
-        await _mediator.Send(new DeleteOrderProductCommand(orderId), new CancellationToken());
+        try
+        {
+            await _mediator.Send(new DeleteOrderProductCommand(orderId), new CancellationToken());
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebApiServiceForVacancy.Core.DTOs;
 using WebApiServiceForVacancy.CQRS.Models.Queries.ProductQueries;
 using WebApiServiceForVacancy.Data;
@@ -21,12 +22,20 @@ public class GetAllProductsAvailableForOrderQueryHandler : IRequestHandler<GetAl
 
     public async Task<IEnumerable<ProductDto>> Handle(GetAllProductsAvailableForOrderQuery request, CancellationToken cancellationToken)
     {
-        var products = await _database.Products
-            .AsNoTracking()
-            .Where(product => product.IsAvailable.Equals(true))
-            .Select(product => _mapper.Map<ProductDto>(product))
-            .ToListAsync(cancellationToken: cancellationToken);
+        try
+        {
+            var products = await _database.Products
+                .AsNoTracking()
+                .Where(product => product.IsAvailable.Equals(true))
+                .Select(product => _mapper.Map<ProductDto>(product))
+                .ToListAsync(cancellationToken: cancellationToken);
 
-        return products;
+            return products;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebApiServiceForVacancy.CQRS.Models.Commands.OrderCommands;
 using WebApiServiceForVacancy.Data;
 using WebApiServiceForVacancy.Data.Entities;
@@ -21,12 +22,20 @@ public class CreateNewOrderCommandHandler : IRequestHandler<CreateNewOrderComman
     public async Task<bool> Handle(CreateNewOrderCommand command, CancellationToken cancellationToken)
     {
 
-        var order = _mapper.Map<Order>(command);
+        try
+        {
+            var order = _mapper.Map<Order>(command);
 
-        await _database.Orders.AddAsync(order, cancellationToken: cancellationToken);
+            await _database.Orders.AddAsync(order, cancellationToken: cancellationToken);
 
-        await _database.SaveChangesAsync(cancellationToken: cancellationToken);
+            await _database.SaveChangesAsync(cancellationToken: cancellationToken);
 
-        return true;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
+        }
     }
 }

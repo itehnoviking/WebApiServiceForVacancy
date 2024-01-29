@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebApiServiceForVacancy.Core.DTOs;
 using WebApiServiceForVacancy.CQRS.Models.Queries.ProductQueries;
 using WebApiServiceForVacancy.Data;
@@ -20,11 +21,19 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
 
     public async Task<ProductDto> Handle(GetProductByIdQuery query, CancellationToken cancellationToken)
     {
-        var product = await _database.Products
-            .AsNoTracking()
-            .Where(product => product.Id.Equals(query.Id))
-            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+        try
+        {
+            var product = await _database.Products
+                .AsNoTracking()
+                .Where(product => product.Id.Equals(query.Id))
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-        return _mapper.Map<ProductDto>(product);
+            return _mapper.Map<ProductDto>(product);
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
+        }
     }
 }

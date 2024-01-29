@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Serilog;
 using WebApiServiceForVacancy.Core.DTOs;
 using WebApiServiceForVacancy.Core.Interfaces.Services;
 using WebApiServiceForVacancy.CQRS.Models.Commands.ProductCommands;
@@ -29,9 +30,8 @@ public class ProductService : IProductService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex + ex.Message);
-            //_logger.LogError(ex, ex.Message);
-            throw;
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
         }
     }
 
@@ -45,9 +45,8 @@ public class ProductService : IProductService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex + ex.Message);
-            //_logger.LogError(ex, ex.Message);
-            throw;
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
         }
     }
 
@@ -61,9 +60,8 @@ public class ProductService : IProductService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex + ex.Message);
-            //_logger.LogError(ex, ex.Message);
-            throw;
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
         }
     }
 
@@ -71,15 +69,12 @@ public class ProductService : IProductService
     {
         try
         {
-            var command = _mapper.Map<EditProductCommand>(dto);
-
-            await _mediator.Send(command, new CancellationToken());
+            await _mediator.Send(new EditProductCommand(dto), new CancellationToken());
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex + ex.Message);
-            //_logger.LogError(ex, ex.Message);
-            throw;
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
         }
     }
 }

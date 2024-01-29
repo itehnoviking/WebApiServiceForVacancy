@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebApiServiceForVacancy.Core.DTOs;
 using WebApiServiceForVacancy.CQRS.Models.Queries.OrderQueries;
 using WebApiServiceForVacancy.Data;
@@ -20,12 +21,20 @@ public class GetOrdersByCustomerIdQueryHandler : IRequestHandler<GetOrdersByCust
 
     public async Task<IEnumerable<OrderDto>> Handle(GetOrdersByCustomerIdQuery query, CancellationToken cancellationToken)
     {
-        var orders = await _database.Orders
-            .AsNoTracking()
-            .Where(order => order.CustomerId.Equals(query.CustomerId))
-            .Select(order => _mapper.Map<OrderDto>(order))
-            .ToListAsync(cancellationToken: cancellationToken);
+        try
+        {
+            var orders = await _database.Orders
+                .AsNoTracking()
+                .Where(order => order.CustomerId.Equals(query.CustomerId))
+                .Select(order => _mapper.Map<OrderDto>(order))
+                .ToListAsync(cancellationToken: cancellationToken);
 
-        return orders;
+            return orders;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
+        }
     }
 }

@@ -6,10 +6,11 @@ using WebApiServiceForVacancy.Core.DTOs;
 using WebApiServiceForVacancy.Core.Interfaces.Services;
 using WebApiServiceForVacancy.Models.Requests;
 using WebApiServiceForVacancy.Models.Responses;
+using Serilog;
 
 namespace WebApiServiceForVacancy.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -23,11 +24,11 @@ namespace WebApiServiceForVacancy.Controllers
         }
 
 
-        [HttpPost("CreateNewProduct")]
+        [HttpPost]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ResponseMessage), 500)]
-        public async Task<IActionResult> CreateNew(CreateNewProductRequest request)
+        public async Task<IActionResult> CreateNew([FromBody]CreateNewProductRequest request)
         {
             try
             {
@@ -42,12 +43,12 @@ namespace WebApiServiceForVacancy.Controllers
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, ex.Message);
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
                 return StatusCode(500, new ResponseMessage { Message = ex.Message });
             }
         }
 
-        [HttpPatch("changeAvailability/{id}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ResponseMessage), 500)]
@@ -78,12 +79,12 @@ namespace WebApiServiceForVacancy.Controllers
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, ex.Message);
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
                 return StatusCode(500, new ResponseMessage { Message = ex.Message });
             }
         }
 
-        [HttpGet("GetAllProductsAvailableForOrder")]
+        [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ProductDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ResponseMessage), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ResponseMessage), 500)]
@@ -103,7 +104,7 @@ namespace WebApiServiceForVacancy.Controllers
             }
             catch (Exception ex)
             {
-                //_logger.LogError(ex, ex.Message);
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
                 return StatusCode(500, new ResponseMessage { Message = ex.Message });
             }
         }

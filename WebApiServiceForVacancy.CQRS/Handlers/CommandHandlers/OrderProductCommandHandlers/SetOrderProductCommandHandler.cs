@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using AutoMapper;
 using MediatR;
+using Serilog;
 using WebApiServiceForVacancy.CQRS.Models.Commands.OrderProductCommands;
 using WebApiServiceForVacancy.Data;
 using WebApiServiceForVacancy.Data.Entities;
@@ -20,16 +21,24 @@ public class SetOrderProductCommandHandler : IRequestHandler<SetOrderProductComm
 
     public async Task<bool> Handle(SetOrderProductCommand command, CancellationToken cancellationToken)
     {
-        var bagOrderProduct = new ConcurrentBag<OrderProduct>();
+        try
+        {
+            var bagOrderProduct = new ConcurrentBag<OrderProduct>();
 
-        Parallel.ForEach(command.ProductIds,
-            productId => bagOrderProduct.Add(new OrderProduct() { OrderId = command.OrderId, ProductId = productId }));
+            Parallel.ForEach(command.ProductIds,
+                productId => bagOrderProduct.Add(new OrderProduct() { OrderId = command.OrderId, ProductId = productId }));
 
-        await _database.OrderProducts
-            .AddRangeAsync(bagOrderProduct, cancellationToken: cancellationToken);
+            await _database.OrderProducts
+                .AddRangeAsync(bagOrderProduct, cancellationToken: cancellationToken);
 
-        await _database.SaveChangesAsync(cancellationToken: cancellationToken);
+            await _database.SaveChangesAsync(cancellationToken: cancellationToken);
 
-        return true;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
+        }
     }
 }

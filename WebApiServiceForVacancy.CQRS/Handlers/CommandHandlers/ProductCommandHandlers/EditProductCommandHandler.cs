@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Serilog;
 using WebApiServiceForVacancy.CQRS.Models.Commands.ProductCommands;
 using WebApiServiceForVacancy.Data;
 using WebApiServiceForVacancy.Data.Entities;
@@ -18,12 +19,20 @@ public class EditProductCommandHandler : IRequestHandler<EditProductCommand, boo
     }
     public async Task<bool> Handle(EditProductCommand command, CancellationToken cancellationToken)
     {
-        var productEntity = _mapper.Map<Product>(command);
+        try
+        {
+            var productEntity = _mapper.Map<Product>(command);
 
-        _database.Products.Update(productEntity);
+            _database.Products.Update(productEntity);
 
-        await _database.SaveChangesAsync(cancellationToken: cancellationToken);
+            await _database.SaveChangesAsync(cancellationToken: cancellationToken);
 
-        return true;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
+        }
     }
 }

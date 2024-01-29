@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebApiServiceForVacancy.CQRS.Models.Commands.OrderProductCommands;
 using WebApiServiceForVacancy.Data;
 
@@ -16,13 +17,21 @@ public class DeleteOrderProductCommandHandler : IRequestHandler<DeleteOrderProdu
 
     public async Task<bool> Handle(DeleteOrderProductCommand command, CancellationToken cancellationToken)
     {
-        var orderProducts = await _database.OrderProducts
-            .Where(op => op.OrderId.Equals(command.OrderId))
-            .ToListAsync(cancellationToken: cancellationToken);
+        try
+        {
+            var orderProducts = await _database.OrderProducts
+                .Where(op => op.OrderId.Equals(command.OrderId))
+                .ToListAsync(cancellationToken: cancellationToken);
 
-        _database.OrderProducts.RemoveRange(orderProducts);
-        await _database.SaveChangesAsync(cancellationToken: cancellationToken);
+            _database.OrderProducts.RemoveRange(orderProducts);
+            await _database.SaveChangesAsync(cancellationToken: cancellationToken);
 
-        return true;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            throw new InvalidOperationException(ex.Message);
+        }
     }
 }
