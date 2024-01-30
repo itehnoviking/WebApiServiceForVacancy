@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiServiceForVacancy.Dat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B0EC6B00-E716-478D-9BD4-178EA6EC4610}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiServiceForVacancy.Domain", "WebApiServiceForVacancy.Domain\WebApiServiceForVacancy.Domain.csproj", "{7B96BA6F-3071-48FD-9198-7E0017DCA86E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiServiceForVacancy.Domain", "WebApiServiceForVacancy.Domain\WebApiServiceForVacancy.Domain.csproj", "{7B96BA6F-3071-48FD-9198-7E0017DCA86E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiServiceForVacancy.Core", "WebApiServiceForVacancy.Core\WebApiServiceForVacancy.Core.csproj", "{B39DAAE2-0320-4456-8F83-9ED1F8E99FB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiServiceForVacancy.Core", "WebApiServiceForVacancy.Core\WebApiServiceForVacancy.Core.csproj", "{B39DAAE2-0320-4456-8F83-9ED1F8E99FB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiServiceForVacancy.CQRS", "WebApiServiceForVacancy.CQRS\WebApiServiceForVacancy.CQRS.csproj", "{561A02CA-8EF4-404E-A7F7-F0A7A309EED8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiServiceForVacancy.CQRS", "WebApiServiceForVacancy.CQRS\WebApiServiceForVacancy.CQRS.csproj", "{561A02CA-8EF4-404E-A7F7-F0A7A309EED8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiServiceForVacancy.Test", "WebApiServiceForVacancy.Test\WebApiServiceForVacancy.Test.csproj", "{F2290717-005F-4EA1-99BF-C821144E3544}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{561A02CA-8EF4-404E-A7F7-F0A7A309EED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{561A02CA-8EF4-404E-A7F7-F0A7A309EED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{561A02CA-8EF4-404E-A7F7-F0A7A309EED8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2290717-005F-4EA1-99BF-C821144E3544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2290717-005F-4EA1-99BF-C821144E3544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2290717-005F-4EA1-99BF-C821144E3544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2290717-005F-4EA1-99BF-C821144E3544}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
